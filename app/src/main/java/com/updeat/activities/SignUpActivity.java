@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.updeat.R;
 
-public class LogInActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
     private Button btnConfirm;
     TextInputEditText userEmail, userPassword;
     private FirebaseAuth mAuth;
@@ -26,25 +26,23 @@ public class LogInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_signup);
 
         btnConfirm = (Button) findViewById(R.id.btnConfirm);
         userEmail = findViewById(R.id.edtxtUsername);
         userPassword = findViewById(R.id.edtxtPassword);
 
         mAuth = FirebaseAuth.getInstance();
+
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginUser();
+                createUser();
             }
         });
     }
-    public void openViewDashboard() {
-        startActivity(new Intent(LogInActivity.this, DashboardActivity.class));
-    }
 
-    public void loginUser(){
+    public void createUser() {
         String email = userEmail.getText().toString();
         String password = userPassword.getText().toString();
 
@@ -57,15 +55,16 @@ public class LogInActivity extends AppCompatActivity {
             userPassword.requestFocus();
         }
         else{
-            mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()){
-                        Toast.makeText(LogInActivity.this, "User logged in succesfully", Toast.LENGTH_SHORT).show();
-                        openViewDashboard();
+                        Toast.makeText(SignUpActivity.this, "User registered succesfully", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(SignUpActivity.this, LogInActivity.class));
                     }
                     else {
-                        Toast.makeText( LogInActivity.this, "Log in Error", Toast.LENGTH_SHORT).show();
+                        task.getException();
+                        Toast.makeText( SignUpActivity.this, "Registration Error", Toast.LENGTH_SHORT).show();
                     }
                 }
             });

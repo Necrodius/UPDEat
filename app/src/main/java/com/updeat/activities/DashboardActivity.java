@@ -7,11 +7,13 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.updeat.R;
 
 public class DashboardActivity extends AppCompatActivity {
 
     private Button btnMyEatery, btnEatery;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +21,9 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         btnMyEatery = (Button) findViewById(R.id.btnMyEatery);
+        btnEatery = (Button) findViewById(R.id.btnEatery);
+
+        mAuth = FirebaseAuth.getInstance();
         btnMyEatery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -26,7 +31,6 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-        btnEatery = (Button) findViewById(R.id.btnEatery);
         btnEatery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,13 +38,19 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed(){
+        mAuth.signOut();
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
     public void openViewMyEatery() {
-        Intent intentDash = new Intent(this, MyEateryActivity.class);
-        startActivity(intentDash);
+        startActivity(new Intent(this, MyEateryActivity.class));
+
     }
 
     public void openViewEatery() {
-        Intent intentDash = new Intent(this, EateryActivity.class);
-        startActivity(intentDash);
+        startActivity(new Intent(this, EateryActivity.class));
     }
 }

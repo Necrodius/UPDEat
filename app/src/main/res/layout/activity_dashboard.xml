@@ -36,7 +36,8 @@
             android:layout_weight="1"
             android:backgroundTint="@color/yellow"
             android:src="@android:drawable/ic_menu_add"
-            android:tint="@color/maroon" />
+            android:contentDescription="Preferences"
+            app:tint="@color/maroon" />
 
     </LinearLayout>
 
@@ -57,6 +58,7 @@
             android:backgroundTint="@color/yellow"
             android:text="My Eatery"
             android:textColor="@color/maroon" />
+
     </LinearLayout>
 
     <LinearLayout
