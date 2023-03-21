@@ -18,6 +18,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.updeat.R;
 
+import java.io.IOException;
+
 public class LogInActivity extends AppCompatActivity {
     private Button btnConfirm;
     TextInputEditText userEmail, userPassword;
@@ -40,6 +42,18 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
     }
+    public boolean isOnline() {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int     exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+        }
+        catch (IOException e)          { e.printStackTrace(); }
+        catch (InterruptedException e) { e.printStackTrace(); }
+
+        return false;
+    }
     public void openViewDashboard() {
         startActivity(new Intent(LogInActivity.this, DashboardActivity.class));
     }
@@ -48,7 +62,9 @@ public class LogInActivity extends AppCompatActivity {
         String email = userEmail.getText().toString();
         String password = userPassword.getText().toString();
 
-        if (TextUtils.isEmpty(email)){
+        if (!isOnline()){
+            Toast.makeText(getApplicationContext(),"No Internet Connection!",Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(email)){
             userEmail.setError("Email cannot be empty!");
             userEmail.requestFocus();
         }
