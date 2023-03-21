@@ -21,7 +21,7 @@ import com.updeat.R;
 import java.io.IOException;
 
 public class LogInActivity extends AppCompatActivity {
-    private Button btnConfirm;
+    private Button btnConfirm, btnForgotPassword;
     TextInputEditText userEmail, userPassword;
     private FirebaseAuth mAuth;
 
@@ -31,6 +31,7 @@ public class LogInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         btnConfirm = (Button) findViewById(R.id.btnConfirm);
+        btnForgotPassword = (Button) findViewById(R.id.btnForgotPassword);
         userEmail = findViewById(R.id.edtxtUsername);
         userPassword = findViewById(R.id.edtxtPassword);
 
@@ -40,6 +41,11 @@ public class LogInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 loginUser();
             }
+        });
+
+        btnForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {openForgotPassword(); }
         });
     }
     public boolean isOnline() {
@@ -53,6 +59,9 @@ public class LogInActivity extends AppCompatActivity {
         catch (InterruptedException e) { e.printStackTrace(); }
 
         return false;
+    }
+    public void openForgotPassword() {
+        startActivity(new Intent(LogInActivity.this, ForgotPasswordActivity.class));
     }
     public void openViewDashboard() {
         startActivity(new Intent(LogInActivity.this, DashboardActivity.class));
@@ -77,7 +86,7 @@ public class LogInActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()){
-                        Toast.makeText(LogInActivity.this, "User logged in succesfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LogInActivity.this, "User logged in successfully", Toast.LENGTH_SHORT).show();
                         openViewDashboard();
                     }
                     else {
