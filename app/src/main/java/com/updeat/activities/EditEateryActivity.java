@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.updeat.R;
 
@@ -43,6 +44,9 @@ public class EditEateryActivity extends AppCompatActivity implements OnMapReadyC
                 }
             }
         });
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapEateryLocation);
+        mapFragment.getMapAsync(this);
     }
     private boolean isEmpty(TextInputEditText etText) {
         return etText.getText().toString().trim().length() == 0;

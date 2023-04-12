@@ -104,7 +104,14 @@
                 android:textColor="@color/maroon"
                 android:textSize="24sp" />
 
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/mapEateryLocation"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                tools:layout="@layout/activity_myeatery">
 
+            </androidx.fragment.app.FragmentContainerView>
         </TableRow>
 
     </LinearLayout>
