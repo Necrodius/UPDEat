@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="#000000"
-    tools:context=".activities.MyEateryActivity">
+    tools:context=".activities.EditEateryActivity">
 
     <TextView
         android:id="@+id/textView"
@@ -64,7 +64,7 @@
                 android:textColor="@color/maroon"
                 android:textSize="24sp" />
 
-            <TextView
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/txtEatTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -104,27 +104,23 @@
                 android:textColor="@color/maroon"
                 android:textSize="24sp" />
 
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/mapEateryLocation"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                tools:layout="@layout/activity_myeatery">
-
-            </androidx.fragment.app.FragmentContainerView>
 
         </TableRow>
 
-        <Button
-            android:id="@+id/btnSave"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:backgroundTint="@color/yellow"
-            android:text="edit eatery information"
-            android:textColor="@color/black" />
-
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:layout_margin="10dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/yellow"
+        android:text="Save Changes"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

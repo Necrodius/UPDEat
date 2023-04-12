@@ -24,6 +24,9 @@
             android:value="AIzaSyCwqiU-slCw8UbM4BdX2pbf5pYbtO4-uok" />
 
         <activity
+            android:name=".activities.EditEateryActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.MyEateryActivity"
             android:exported="false" />
         <activity
