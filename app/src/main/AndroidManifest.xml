@@ -16,6 +16,17 @@
         android:theme="@style/Theme.UPDeat"
         tools:targetApi="31">
         <activity
+            android:name=".activities.AddMenuItemActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.EditMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.AddEateryActivity"
+            android:exported="false"
+            android:label="@string/title_activity_add_eatery"
+            android:theme="@style/Theme.UPDeat.NoActionBar" />
+        <activity
             android:name=".activities.ForgotPasswordActivity"
             android:exported="false" />
 

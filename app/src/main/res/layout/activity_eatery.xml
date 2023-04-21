@@ -24,8 +24,8 @@
 
     <LinearLayout
         android:id="@+id/eateryLinearView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="389dp"
+        android:layout_height="626dp"
         android:layout_margin="10dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -72,9 +72,9 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/mapEateryLocation"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:name="com.google.android.gms.maps.SupportMapFragment">
+            android:layout_height="200dp">
 
         </androidx.fragment.app.FragmentContainerView>
 

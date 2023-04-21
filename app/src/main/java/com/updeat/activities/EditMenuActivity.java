@@ -1,65 +1,59 @@
 package com.updeat.activities;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.AlertDialog;
-import android.app.Instrumentation;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 import com.updeat.R;
 
+import java.io.IOException;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EditEateryActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class EditMenuActivity extends AppCompatActivity {
 
-    private Button BtnSave, BtnMenu;
-    TextInputEditText textTimeRange;
-    TextInputEditText textEateryName;
-    private ListView lstMenu;
-    String EateryID;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    private ListView lstMenu;
+    private Button btnAddItem, btnConfirm;
+    String EateryID;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editeatery);
+        setContentView(R.layout.activity_editmenu);
 
         FirebaseAuth authProfile = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = authProfile.getCurrentUser();
         String uid = firebaseUser.getUid();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        textEateryName = findViewById(R.id.edittxtEateryName);
-        textTimeRange = findViewById(R.id.edittxtEatTime);
-        BtnSave = findViewById(R.id.btnSave);
-        BtnMenu = findViewById(R.id.btnEditMenu);
-
+        lstMenu = findViewById(R.id.lstEateryMenu);
+        btnAddItem = findViewById(R.id.btnAddItem);
+        btnConfirm = findViewById(R.id.btnSaveMenu);
 
         DocumentReference usereateryRef = db.collection("UserEateryRelation").document(uid);
         usereateryRef.get()
@@ -86,64 +80,22 @@ public class EditEateryActivity extends AppCompatActivity implements OnMapReadyC
                         Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 });
-        BtnSave.setOnClickListener(new View.OnClickListener() {
+
+        btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(EditEateryActivity.this);
-                builder.setCancelable(true);
-                builder.setMessage("Save your Changes?");
-                builder.setPositiveButton("Confirm",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (isEmpty(textEateryName)) {
-                                    Toast.makeText(getApplicationContext(), "Your Eatery needs a name!", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Map<String,Object> data = new HashMap<>();
-                                    data.put("name",textEateryName.getText().toString());
-                                    data.put("timerange",textTimeRange.getText().toString());
-
-                                    db.collection("Eateries").document(EateryID)
-                                            .set(data,SetOptions.merge());
-                                    openViewDashboard();
-                                }
-                            }
-                        });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
+                openViewAddMenuItem();
             }
         });
 
-        BtnMenu.setOnClickListener(new View.OnClickListener() {
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openMenuEdit();
+                openViewEditEatery();
             }
         });
 
-//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapEateryLocation);
-//        mapFragment.getMapAsync(this);
-
-}
-    private boolean isEmpty(TextInputEditText etText) {
-        return etText.getText().toString().trim().length() == 0;
     }
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-
-    }
-
-    public void openMenuEdit() {
-        startActivity(new Intent(EditEateryActivity.this, EditMenuActivity.class));
-    }
-
     public void getEateryInfo(String EateryID) {
         DocumentReference eateryRef = db.collection("Eateries").document(EateryID);
         eateryRef.get()
@@ -151,14 +103,8 @@ public class EditEateryActivity extends AppCompatActivity implements OnMapReadyC
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
-                            String EateryName = documentSnapshot.getString("name");
-                            textEateryName.setText(EateryName);
-                            String TimeRange = documentSnapshot.getString("timerange");
-                            if (TimeRange != null) {
-                                textTimeRange.setText(TimeRange);
-                            }
                             Map<String, List<String>> menu = (HashMap<String,List<String>>) documentSnapshot.getData().get("Menu");
-                            if (menu !=null) {
+                            if (menu != null) {
                                 displayMenuItems(menu);
                             }
 
@@ -175,14 +121,29 @@ public class EditEateryActivity extends AppCompatActivity implements OnMapReadyC
                     }
                 });
     }
+
+    public boolean isOnline() {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int     exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+        }
+        catch (IOException e)          { e.printStackTrace(); }
+        catch (InterruptedException e) { e.printStackTrace(); }
+
+        return false;
+    }
     public void displayMenuItems(Map<String,List<String>> menu) {
         List<HashMap<String, String>> menuItems = new ArrayList<>();
+        List<String> menuItemNames = new ArrayList<>();
 
         SimpleAdapter adapter = new SimpleAdapter(this, menuItems, R.layout.list_item,
                 new String[]{"First Line", "Second Line"},
                 new int[]{R.id.text1, R.id.text2});
 
         for (String key : menu.keySet()) {
+            menuItemNames.add(key);
             HashMap<String,String> itemStrings = new HashMap<>();
             String ingredients = "";
             List<String> item = menu.get(key);
@@ -199,10 +160,55 @@ public class EditEateryActivity extends AppCompatActivity implements OnMapReadyC
         lstMenu = findViewById(R.id.lstEateryMenu);
         lstMenu.setAdapter(adapter);
 
+        lstMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(), menuItemNames.get(position), Toast.LENGTH_SHORT).show();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditMenuActivity.this);
+                builder.setTitle(menuItemNames.get(position));
+
+                builder.setMessage("Remove this Menu Item?");
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!isOnline()) {
+                            Toast.makeText(getApplicationContext(),"No Internet Connection!",Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Map<String, Object> deleteItem = new HashMap<>();
+                            deleteItem.put("Menu." + menuItemNames.get(position), FieldValue.delete());
+
+                            FirebaseFirestore.getInstance()
+                                    .collection("Eateries")
+                                    .document(EateryID)
+                                    .update(deleteItem);
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        finish();
+                        startActivity(getIntent());
+                    }
+                });
+
+                builder.show();
+            }
+        });
     }
 
-    public void openViewDashboard() {
-        startActivity(new Intent(EditEateryActivity.this, DashboardActivity.class));
+    public void openViewAddMenuItem() {
+        startActivity(new Intent(this, AddMenuItemActivity.class));
+
     }
+
+    public void openViewEditEatery() {
+        startActivity(new Intent(this, EditEateryActivity.class));
+    }
+
+
 }
-

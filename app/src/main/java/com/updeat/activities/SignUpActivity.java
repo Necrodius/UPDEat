@@ -22,6 +22,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.updeat.R;
 
 import java.io.IOException;
@@ -33,7 +34,6 @@ public class SignUpActivity extends AppCompatActivity {
     private Button btnConfirm;
     TextInputEditText userEmail, userPassword;
     private FirebaseAuth mAuth;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +77,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         return false;
     }
+
     public void createUser() {
         String email = userEmail.getText().toString();
         String password = userPassword.getText().toString();
