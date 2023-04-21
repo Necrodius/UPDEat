@@ -30,6 +30,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.updeat.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -89,34 +90,39 @@ public class EditEateryActivity extends AppCompatActivity implements OnMapReadyC
         BtnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(EditEateryActivity.this);
-                builder.setCancelable(true);
-                builder.setMessage("Save your Changes?");
-                builder.setPositiveButton("Confirm",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (isEmpty(textEateryName)) {
-                                    Toast.makeText(getApplicationContext(), "Your Eatery needs a name!", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Map<String,Object> data = new HashMap<>();
-                                    data.put("name",textEateryName.getText().toString());
-                                    data.put("timerange",textTimeRange.getText().toString());
+                if (!isOnline()) {
+                    Toast.makeText(getApplicationContext(), "No Internet Connection!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EditEateryActivity.this);
+                    builder.setCancelable(true);
+                    builder.setMessage("Save your Changes?");
+                    builder.setPositiveButton("Confirm",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (isEmpty(textEateryName)) {
+                                        Toast.makeText(getApplicationContext(), "Your Eatery needs a name!", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Map<String, Object> data = new HashMap<>();
+                                        data.put("name", textEateryName.getText().toString());
+                                        data.put("timerange", textTimeRange.getText().toString());
 
-                                    db.collection("Eateries").document(EateryID)
-                                            .set(data,SetOptions.merge());
-                                    openViewDashboard();
+                                        db.collection("Eateries").document(EateryID)
+                                                .set(data, SetOptions.merge());
+                                        openViewDashboard();
+                                    }
                                 }
-                            }
-                        });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
+                            });
+                    builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
 
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
 
             }
         });
@@ -203,6 +209,19 @@ public class EditEateryActivity extends AppCompatActivity implements OnMapReadyC
 
     public void openViewDashboard() {
         startActivity(new Intent(EditEateryActivity.this, DashboardActivity.class));
+    }
+
+    public boolean isOnline() {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int     exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+        }
+        catch (IOException e)          { e.printStackTrace(); }
+        catch (InterruptedException e) { e.printStackTrace(); }
+
+        return false;
     }
 }
 
