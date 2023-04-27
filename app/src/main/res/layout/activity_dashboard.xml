@@ -18,16 +18,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <SearchView
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/SearchBar"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginEnd="10dp"
             android:layout_weight="5"
             android:background="@color/white"
-            android:inputType="text">
+            android:inputType="text"
+            app:queryHint="Search">
 
-        </SearchView>
+        </androidx.appcompat.widget.SearchView>
 
         <ImageButton
             android:id="@+id/imageButton"
@@ -60,27 +61,21 @@
             android:textColor="@color/maroon" />
 
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="411dp"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
-        <Button
-            android:id="@+id/btnEatery"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dashEateryRec"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:backgroundTint="@color/white"
-            android:text="EATERY 1"
-            android:textColor="#020202" />
+            android:layout_margin="20dp"
+            tools:itemCount="5" />
 
-    </LinearLayout>
-
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
