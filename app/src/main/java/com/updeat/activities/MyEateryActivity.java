@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,14 +18,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,6 +42,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.updeat.R;
+import com.updeat.fragments.MapFragment;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -50,6 +56,7 @@ public class MyEateryActivity extends AppCompatActivity implements OnMapReadyCal
     private TextView txtEateryName;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ListView lstMenu;
+
 
     ActivityResultLauncher<Intent> activityLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -71,6 +78,9 @@ public class MyEateryActivity extends AppCompatActivity implements OnMapReadyCal
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myeatery);
+
+        Fragment fragment = new MapFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameEateryLocation,fragment).commit();
 
         txtEatTimes = (TextView) findViewById(R.id.txtEatTime);
         btnEditEatery = (Button) findViewById(R.id.btnSave);
@@ -122,8 +132,8 @@ public class MyEateryActivity extends AppCompatActivity implements OnMapReadyCal
             }
         });
 
-//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapEateryLocation);
-//        mapFragment.getMapAsync(this);
+//       SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapEateryLocation);
+//       mapFragment.getMapAsync(this);
     }
     public boolean isOnline() {
         Runtime runtime = Runtime.getRuntime();

@@ -30,19 +30,15 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 import com.updeat.R;
 import com.updeat.adapters.EateryRecyclerAdapter;
-import com.updeat.listeners.RecyclerViewClickListener;
+import com.updeat.models.listeners.RecyclerViewClickListener;
 import com.updeat.models.Eatery;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class DashboardActivity extends AppCompatActivity implements RecyclerViewClickListener {
 

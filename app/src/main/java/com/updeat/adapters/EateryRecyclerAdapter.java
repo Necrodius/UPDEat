@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.updeat.R;
-import com.updeat.listeners.RecyclerViewClickListener;
+import com.updeat.models.listeners.RecyclerViewClickListener;
 import com.updeat.models.Eatery;
 
 import java.util.ArrayList;
