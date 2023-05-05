@@ -16,9 +16,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
@@ -38,12 +41,13 @@ import java.util.Map;
 
 public class EditEateryActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private Button BtnSave, BtnMenu;
+    private Button BtnSave, BtnMenu, BtnChangeLocation;
     TextInputEditText textTimeRange;
     TextInputEditText textEateryName;
     private ListView lstMenu;
     String EateryID;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    GoogleMap mGoogleMap;
 
 
     @Override
@@ -60,6 +64,7 @@ public class EditEateryActivity extends AppCompatActivity implements OnMapReadyC
         textTimeRange = findViewById(R.id.edittxtEatTime);
         BtnSave = findViewById(R.id.btnSave);
         BtnMenu = findViewById(R.id.btnEditMenu);
+        BtnChangeLocation = findViewById(R.id.btnEditLocation);
 
 
         DocumentReference usereateryRef = db.collection("UserEateryRelation").document(uid);
@@ -134,16 +139,23 @@ public class EditEateryActivity extends AppCompatActivity implements OnMapReadyC
             }
         });
 
-//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapEateryLocation);
-//        mapFragment.getMapAsync(this);
+        BtnChangeLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openChangeLocation();
+            }
+        });
 
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapEateryLocation);
+        mapFragment.getMapAsync(this);
 }
+
     private boolean isEmpty(TextInputEditText etText) {
         return etText.getText().toString().trim().length() == 0;
     }
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-
+        mGoogleMap = googleMap;
     }
 
     public void openMenuEdit() {
@@ -160,6 +172,19 @@ public class EditEateryActivity extends AppCompatActivity implements OnMapReadyC
                             String EateryName = documentSnapshot.getString("name");
                             textEateryName.setText(EateryName);
                             String TimeRange = documentSnapshot.getString("timerange");
+
+                            double Latitude = documentSnapshot.getDouble("latitude");
+                            double Longitude = documentSnapshot.getDouble("longitude");
+                            LatLng latLng = new LatLng(Latitude,Longitude);
+
+                            if (latLng != null) {
+                                mGoogleMap.clear();
+                                MarkerOptions markerOptions = new MarkerOptions();
+                                markerOptions.position(latLng);
+                                markerOptions.title(EateryName);
+                                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                                mGoogleMap.addMarker(markerOptions);
+                            }
                             if (TimeRange != null) {
                                 textTimeRange.setText(TimeRange);
                             }
@@ -209,6 +234,10 @@ public class EditEateryActivity extends AppCompatActivity implements OnMapReadyC
 
     public void openViewDashboard() {
         startActivity(new Intent(EditEateryActivity.this, DashboardActivity.class));
+    }
+
+    public void openChangeLocation() {
+        startActivity(new Intent(EditEateryActivity.this, EateryLocationActivity.class));
     }
 
     public boolean isOnline() {

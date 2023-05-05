@@ -42,7 +42,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.updeat.R;
-import com.updeat.fragments.MapFragment;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -56,6 +55,9 @@ public class MyEateryActivity extends AppCompatActivity implements OnMapReadyCal
     private TextView txtEateryName;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ListView lstMenu;
+
+    LatLng latLng;
+    GoogleMap mGoogleMap;
 
 
     ActivityResultLauncher<Intent> activityLauncher = registerForActivityResult(
@@ -79,8 +81,8 @@ public class MyEateryActivity extends AppCompatActivity implements OnMapReadyCal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myeatery);
 
-        Fragment fragment = new MapFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameEateryLocation,fragment).commit();
+//        Fragment fragment = new MapFragment();
+//        getSupportFragmentManager().beginTransaction().replace(R.id.frameEateryLocation,fragment).commit();
 
         txtEatTimes = (TextView) findViewById(R.id.txtEatTime);
         btnEditEatery = (Button) findViewById(R.id.btnSave);
@@ -90,6 +92,7 @@ public class MyEateryActivity extends AppCompatActivity implements OnMapReadyCal
         FirebaseAuth authProfile = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = authProfile.getCurrentUser();
         String uid = firebaseUser.getUid();
+
         if (firebaseUser == null) {
             Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
         }
@@ -101,6 +104,7 @@ public class MyEateryActivity extends AppCompatActivity implements OnMapReadyCal
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
                             String EateryID = documentSnapshot.getString("name");
+
                             if (EateryID != null) {
                                 getEateryInfo(EateryID);
                             }
@@ -132,8 +136,8 @@ public class MyEateryActivity extends AppCompatActivity implements OnMapReadyCal
             }
         });
 
-//       SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapEateryLocation);
-//       mapFragment.getMapAsync(this);
+       SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapEateryLocation);
+       mapFragment.getMapAsync(this);
     }
     public boolean isOnline() {
         Runtime runtime = Runtime.getRuntime();
@@ -148,8 +152,8 @@ public class MyEateryActivity extends AppCompatActivity implements OnMapReadyCal
         return false;
     }
     @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-
+    public void onMapReady(GoogleMap googleMap) {
+        mGoogleMap = googleMap;
     }
 
     // Updates the text shown on screen to show the eatery linked to the user
@@ -163,6 +167,20 @@ public class MyEateryActivity extends AppCompatActivity implements OnMapReadyCal
                             String EateryName = documentSnapshot.getString("name");
                             txtEateryName.setText(EateryName);
                             String TimeRange = documentSnapshot.getString("timerange");
+
+                            double Latitude = documentSnapshot.getDouble("latitude");
+                            double Longitude = documentSnapshot.getDouble("longitude");
+                            LatLng latLng = new LatLng(Latitude,Longitude);
+
+                            if (latLng != null) {
+                                mGoogleMap.clear();
+                                MarkerOptions markerOptions = new MarkerOptions();
+                                markerOptions.position(latLng);
+                                markerOptions.title(EateryName);
+                                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                                mGoogleMap.addMarker(markerOptions);
+                            }
+
                             if (TimeRange != null) {
                                 txtEatTimes.setText(TimeRange);
                             }

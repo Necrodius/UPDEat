@@ -122,18 +122,28 @@
                 tools:layout="@layout/activity_myeatery">
 
             </androidx.fragment.app.FragmentContainerView>
+
         </TableRow>
+
+        <Button
+            android:id="@+id/btnEditLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_marginStart="16dp"
+            android:backgroundTint="@color/yellow"
+            android:text="Change Location"
+            android:textColor="@color/maroon" />
 
         <Button
             android:id="@+id/btnSave"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
-            android:layout_margin="10dp"
+
             android:layout_marginStart="16dp"
             android:layout_marginBottom="4dp"
             android:backgroundTint="@color/yellow"
             android:text="Save Changes"
-            android:textColor="@color/black" />
+            android:textColor="@color/maroon" />
 
     </LinearLayout>
 
