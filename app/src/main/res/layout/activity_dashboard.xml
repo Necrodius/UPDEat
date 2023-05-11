@@ -31,13 +31,13 @@
         </androidx.appcompat.widget.SearchView>
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/btnShowPref"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="@color/yellow"
-            android:src="@android:drawable/ic_menu_add"
             android:contentDescription="Preferences"
+            android:src="@android:drawable/ic_menu_add"
             app:tint="@color/maroon" />
 
     </LinearLayout>
