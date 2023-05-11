@@ -40,6 +40,9 @@
             android:name=".activities.AddMenuItemActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.ShowEateryActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.EditMenuActivity"
             android:exported="false" />
         <activity

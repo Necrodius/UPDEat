@@ -421,7 +421,12 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerView
 
     @Override
     public void onItemClick(int position) {
-        Toast.makeText(getApplicationContext(), eateryArrayList.get(position).getName() + " was clicked!", Toast.LENGTH_SHORT).show();
+        String value = eateryArrayList.get(position).getName();
+        Intent i = new Intent(DashboardActivity.this, ShowEateryActivity.class);
+        i.putExtra("key",value);
+        startActivity(i);
+        // startActivity(new Intent(this, ShowEateryActivity.class));
+        // Toast.makeText(getApplicationContext(), eateryArrayList.get(position).getName() + " was clicked!", Toast.LENGTH_SHORT).show();
     }
 
     public void getAndSetCurrentLocation() {
