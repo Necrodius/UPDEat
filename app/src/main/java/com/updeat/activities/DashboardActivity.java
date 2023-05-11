@@ -76,7 +76,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerView
     Double currLat, currLong;
     FusedLocationProviderClient fusedLocationProviderClient;
 
-
+    ArrayList<Eatery> filterEatList = new ArrayList<Eatery>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -300,6 +300,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerView
                             Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
                         }
                     });
+            filterEatList = filteredEateryList;
         }
 
     }
@@ -421,10 +422,19 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerView
 
     @Override
     public void onItemClick(int position) {
-        String value = eateryArrayList.get(position).getName();
-        Intent i = new Intent(DashboardActivity.this, ShowEateryActivity.class);
-        i.putExtra("key",value);
-        startActivity(i);
+        if (!filterEatList.isEmpty()) {
+            String value = filterEatList.get(position).getName();
+            filterEatList = null;
+            Intent i = new Intent(DashboardActivity.this, ShowEateryActivity.class);
+            i.putExtra("key", value);
+            startActivity(i);
+        } else {
+            String value = eateryArrayList.get(position).getName();
+            filterEatList = null;
+            Intent i = new Intent(DashboardActivity.this, ShowEateryActivity.class);
+            i.putExtra("key", value);
+            startActivity(i);
+        }
         // startActivity(new Intent(this, ShowEateryActivity.class));
         // Toast.makeText(getApplicationContext(), eateryArrayList.get(position).getName() + " was clicked!", Toast.LENGTH_SHORT).show();
     }
@@ -515,5 +525,4 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerView
 
         return true;
     }
-
 }
