@@ -147,7 +147,7 @@ public class ShowEateryActivity extends AppCompatActivity implements OnMapReadyC
                             String TimeRange = documentSnapshot.getString("timerange");
                             Double AvePrice = documentSnapshot.getDouble("averageprice");
                             txtAvePrice.setText(Double.toString(AvePrice));
-                            
+
                             double Latitude = documentSnapshot.getDouble("latitude");
                             double Longitude = documentSnapshot.getDouble("longitude");
                             LatLng latLng = new LatLng(Latitude,Longitude);

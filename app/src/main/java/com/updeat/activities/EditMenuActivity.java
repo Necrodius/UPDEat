@@ -175,7 +175,7 @@ public class EditMenuActivity extends AppCompatActivity {
         int budget;
         if (AveragePrice <= 200){
             budget = 1;
-        } else if (AveragePrice > 200){
+        } else if (AveragePrice > 200 && AveragePrice <= 400){
             budget = 2;
         } else {
             budget = 3;
