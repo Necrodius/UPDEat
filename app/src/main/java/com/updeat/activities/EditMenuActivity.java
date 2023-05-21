@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,6 +26,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.updeat.R;
 
 import java.io.IOException;
@@ -40,8 +42,8 @@ public class EditMenuActivity extends AppCompatActivity {
 
     private ListView lstMenu;
     private Button btnAddItem, btnConfirm;
+    private TextView txtAvePrice;
     String EateryID;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +56,7 @@ public class EditMenuActivity extends AppCompatActivity {
         lstMenu = findViewById(R.id.lstEateryMenu);
         btnAddItem = findViewById(R.id.btnAddItem);
         btnConfirm = findViewById(R.id.btnSaveMenu);
+        txtAvePrice = findViewById(R.id.txtAvePrice);
 
         DocumentReference usereateryRef = db.collection("UserEateryRelation").document(uid);
         usereateryRef.get()
@@ -157,6 +160,34 @@ public class EditMenuActivity extends AppCompatActivity {
             itemStrings.put("Second Line",ingredients);
             menuItems.add(itemStrings);
         }
+        double Total = 0;
+        for (int k = 0; k<menuItemNames.size(); k++){
+            String[] separated = menuItemNames.get(k).split("-");
+            String name = separated[0];
+            double price = Double.parseDouble(separated[1]);
+            Total += price;
+        }
+
+        double a = Total/menuItemNames.size();
+        double AveragePrice = Math.round(a*100.0)/100.0;
+        // If AveragePrice {0-200} == Budget: 1
+        // {200-400} == Budget: 2, else; Budget: 3
+        int budget;
+        if (AveragePrice <= 200){
+            budget = 1;
+        } else if (AveragePrice > 200){
+            budget = 2;
+        } else {
+            budget = 3;
+        }
+        Map<String, Object> data = new HashMap<>();
+        data.put("averageprice", AveragePrice);
+        data.put("budget", budget);
+
+        txtAvePrice.setText(Double.toString(AveragePrice));
+
+        db.collection("Eateries").document(EateryID)
+                .set(data, SetOptions.merge());
         lstMenu = findViewById(R.id.lstEateryMenu);
         lstMenu.setAdapter(adapter);
 

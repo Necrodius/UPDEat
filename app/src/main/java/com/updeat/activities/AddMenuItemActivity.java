@@ -42,6 +42,7 @@ public class AddMenuItemActivity extends AppCompatActivity {
     private ListView listIngredients;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     TextInputEditText textItemName;
+    TextInputEditText textItemPrice;
     String EateryID;
     String ItemName;
 
@@ -53,6 +54,7 @@ public class AddMenuItemActivity extends AppCompatActivity {
         btnAddIngredient = findViewById(R.id.btnAddIngredient);
         btnConfirm = findViewById(R.id.btnSaveMenu);
         textItemName = findViewById(R.id.edittxtItemName);
+        textItemPrice = findViewById(R.id.edittxtItemPrice);
         listIngredients = findViewById(R.id.lstIngredients);
 
         FirebaseAuth authProfile = FirebaseAuth.getInstance();
@@ -101,12 +103,16 @@ public class AddMenuItemActivity extends AppCompatActivity {
     public void createMenuItem(List<String> Ingredients) {
 
         String ItemName = textItemName.getText().toString();
+        String ItemPrice = textItemPrice.getText().toString();
 
         if (!isOnline()) {
             Toast.makeText(getApplicationContext(),"No Internet Connection!",Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(ItemName)){
             textItemName.setError("Item Name cannot be empty!");
             textItemName.requestFocus();
+        } else if (TextUtils.isEmpty(ItemPrice)){
+            textItemPrice.setError("Item Price cannot be empty!");
+            textItemPrice.requestFocus();
         }
         else {
 
@@ -116,7 +122,8 @@ public class AddMenuItemActivity extends AppCompatActivity {
                 ingredients[i] = Ingredients.get(i);
             }
             Map<String,Object> item = new HashMap<>();
-            item.put(ItemName, Arrays.asList(ingredients));
+            String ItemMix = ItemName +" - "+ ItemPrice;
+            item.put(ItemMix, Arrays.asList(ingredients));
             menu.put("Menu",item);
 
             db.collection("Eateries").document(EateryID).set(menu,SetOptions.merge());

@@ -45,6 +45,20 @@
             android:layout_width="match_parent"
             android:layout_height="200dp" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Average Price:"
+            android:textColor="@color/maroon"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/txtAvePrice"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:text="amount"
+            android:textSize="24sp" />
+
         <Button
             android:id="@+id/btnAddItem"
             android:layout_width="match_parent"

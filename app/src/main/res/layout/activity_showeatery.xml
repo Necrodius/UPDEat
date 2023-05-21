@@ -89,8 +89,30 @@
                 android:id="@+id/lstEateryMenu"
                 android:layout_width="match_parent"
                 android:layout_height="200dp" />
+
         </TableRow>
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="Average Price:"
+                android:textColor="@color/maroon"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/txtAvePrice"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:text="amount"
+                android:textSize="24sp" />
+
+        </TableRow>
 
         <TableRow
             android:layout_width="match_parent"

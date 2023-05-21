@@ -135,6 +135,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerView
                 .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
+                        filterEatList = null;
                         filterList(searchView.getQuery().toString());
                         swipeRefreshLayout.setRefreshing(false);
                     }

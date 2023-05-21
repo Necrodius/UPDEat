@@ -53,6 +53,7 @@ public class MyEateryActivity extends AppCompatActivity implements OnMapReadyCal
     private Button btnEditEatery;
     private TextView txtEatTimes;
     private TextView txtEateryName;
+    private TextView txtAvePrice;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ListView lstMenu;
 
@@ -87,6 +88,7 @@ public class MyEateryActivity extends AppCompatActivity implements OnMapReadyCal
         txtEatTimes = (TextView) findViewById(R.id.txtEatTime);
         btnEditEatery = (Button) findViewById(R.id.btnSave);
         txtEateryName = (TextView) findViewById(R.id.txtEateryName);
+        txtAvePrice = (TextView) findViewById(R.id.txtAvePrice);
         lstMenu = (ListView) findViewById(R.id.lstEateryMenu);
 
         FirebaseAuth authProfile = FirebaseAuth.getInstance();
@@ -167,6 +169,8 @@ public class MyEateryActivity extends AppCompatActivity implements OnMapReadyCal
                             String EateryName = documentSnapshot.getString("name");
                             txtEateryName.setText(EateryName);
                             String TimeRange = documentSnapshot.getString("timerange");
+                            Double AvePrice = documentSnapshot.getDouble("averageprice");
+                            txtAvePrice.setText(Double.toString(AvePrice));
 
                             double Latitude = documentSnapshot.getDouble("latitude");
                             double Longitude = documentSnapshot.getDouble("longitude");

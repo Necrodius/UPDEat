@@ -53,6 +53,7 @@ import java.util.Map;
 public class ShowEateryActivity extends AppCompatActivity implements OnMapReadyCallback {
     private TextView txtEatTimes;
     private TextView txtEateryName;
+    private TextView txtAvePrice;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ListView lstMenu;
 
@@ -88,6 +89,7 @@ public class ShowEateryActivity extends AppCompatActivity implements OnMapReadyC
 
         txtEatTimes = (TextView) findViewById(R.id.txtEatTime);
         txtEateryName = (TextView) findViewById(R.id.txtEateryName);
+        txtAvePrice = (TextView) findViewById(R.id.txtAvePrice);
         lstMenu = (ListView) findViewById(R.id.lstEateryMenu);
 
 
@@ -143,7 +145,9 @@ public class ShowEateryActivity extends AppCompatActivity implements OnMapReadyC
                             String EateryName = documentSnapshot.getString("name");
                             txtEateryName.setText(EateryName);
                             String TimeRange = documentSnapshot.getString("timerange");
-
+                            Double AvePrice = documentSnapshot.getDouble("averageprice");
+                            txtAvePrice.setText(Double.toString(AvePrice));
+                            
                             double Latitude = documentSnapshot.getDouble("latitude");
                             double Longitude = documentSnapshot.getDouble("longitude");
                             LatLng latLng = new LatLng(Latitude,Longitude);
