@@ -88,10 +88,7 @@ public class ShowEateryActivity extends AppCompatActivity implements OnMapReadyC
         }
 
         txtEatTimes = (TextView) findViewById(R.id.txtEatTime);
-        txtEateryName = (TextView) findViewById(R.id.txtEateryName);
-=======
         txtEateryName = (TextView) findViewById(R.id.textView);
->>>>>>> Stashed changes
         txtAvePrice = (TextView) findViewById(R.id.txtAvePrice);
         lstMenu = (ListView) findViewById(R.id.lstEateryMenu);
 
