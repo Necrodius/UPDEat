@@ -423,18 +423,18 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerView
 
     @Override
     public void onItemClick(int position) {
-        if (!filterEatList.isEmpty()) {
-            String value = filterEatList.get(position).getName();
-            filterEatList = null;
-            Intent i = new Intent(DashboardActivity.this, ShowEateryActivity.class);
-            i.putExtra("key", value);
-            startActivity(i);
-        } else {
-            String value = eateryArrayList.get(position).getName();
-            filterEatList = null;
-            Intent i = new Intent(DashboardActivity.this, ShowEateryActivity.class);
-            i.putExtra("key", value);
-            startActivity(i);
+        if(filterEatList != null) {
+            if (!filterEatList.isEmpty()) {
+                String value = filterEatList.get(position).getName();
+                Intent i = new Intent(DashboardActivity.this, ShowEateryActivity.class);
+                i.putExtra("key", value);
+                startActivity(i);
+            } else {
+                String value = eateryArrayList.get(position).getName();
+                Intent i = new Intent(DashboardActivity.this, ShowEateryActivity.class);
+                i.putExtra("key", value);
+                startActivity(i);
+            }
         }
         // startActivity(new Intent(this, ShowEateryActivity.class));
         // Toast.makeText(getApplicationContext(), eateryArrayList.get(position).getName() + " was clicked!", Toast.LENGTH_SHORT).show();
