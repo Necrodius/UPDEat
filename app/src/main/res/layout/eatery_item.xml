@@ -11,61 +11,42 @@
     app:cardCornerRadius="10dp"
     app:cardElevation="5dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:layout_centerVertical="true">
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imgEateryPic"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp" />
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/txtEateryName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignTop="@id/imgEateryPic"
-            android:layout_alignBottom="@id/imgEateryPic"
-            android:layout_toEndOf="@id/imgEateryPic">
+            android:textColor="@color/maroon"
+            android:text="name"
+            android:textSize="24dp"/>
 
-            <TextView
-                android:id="@+id/txtEateryName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/maroon"
-                android:text="name"
-                android:textSize="24dp"/>
+        <TextView
+            android:id="@+id/txtEatTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/green"
+            android:text="timerange"
+            android:textSize="14dp"/>
 
-            <TextView
-                android:id="@+id/txtEatTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/green"
-                android:text="timerange"
-                android:textSize="14dp"/>
+        <TextView
+            android:id="@+id/txtBgt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/yellow"
+            android:text="₱₱₱"
+            android:textSize="14dp"/>
 
-            <TextView
-                android:id="@+id/txtBgt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/yellow"
-                android:text="₱₱₱"
-                android:textSize="14dp"/>
+        <TextView
+            android:id="@+id/txtAddr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="aasda,faf ada1 a, ajfhakhjf, city, adja"
+            android:textSize="10dp"/>
 
-            <TextView
-                android:id="@+id/txtAddr"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text="aasda,faf ada1 a, ajfhakhjf, city, adja"
-                android:textSize="10dp"/>
-
-        </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 </androidx.cardview.widget.CardView>
