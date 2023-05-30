@@ -95,8 +95,6 @@ public class AddEateryActivity extends AppCompatActivity implements OnMapReadyCa
                             Toast.makeText(AddEateryActivity.this, "An Error Occurred", Toast.LENGTH_SHORT).show();
                         }
                     });
-
-
         }
 
     }
