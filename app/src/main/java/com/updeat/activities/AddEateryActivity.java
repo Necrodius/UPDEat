@@ -19,11 +19,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.updeat.R;
 
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -86,6 +88,33 @@ public class AddEateryActivity extends AppCompatActivity implements OnMapReadyCa
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(AddEateryActivity.this, "Eatery Added Successfully", Toast.LENGTH_SHORT).show();
+                            Map<String,Object> menu = new HashMap<>();
+                            String ingredients[] = {"DefaultIngredient"};
+                            Map<String,Object> item = new HashMap<>();
+                            String ItemMix = "DefaultItemName" +" - "+ "0.0";
+                            item.put(ItemMix, Arrays.asList(ingredients));
+                            menu.put("Menu",item);
+
+                            db.collection("Eateries").document(EateryName).set(menu, SetOptions.merge());
+
+                            Map<String, Object> data = new HashMap<>();
+                            data.put("latitude", 0);
+                            data.put("longitude",0);
+
+                            db.collection("Eateries").document(EateryName).set(data, SetOptions.merge());
+
+                            Map<String, Object> data2 = new HashMap<>();
+                            data2.put("latitude", 0);
+                            data2.put("longitude",0);
+
+                            db.collection("Eateries").document(EateryName).set(data2, SetOptions.merge());
+
+                            Map<String, Object> data3 = new HashMap<>();
+                            data3.put("averageprice", 0);
+                            data3.put("budget", 1);
+
+                            db.collection("Eateries").document(EateryName).set(data3, SetOptions.merge());
+
                             openViewDashboard();
                         }
                     })

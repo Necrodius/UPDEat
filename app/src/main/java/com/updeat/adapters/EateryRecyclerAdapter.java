@@ -88,7 +88,6 @@ public class EateryRecyclerAdapter extends RecyclerView.Adapter<EateryRecyclerAd
             super(itemView);
             eateryName = itemView.findViewById(R.id.txtEateryName);
             eateryTime = itemView.findViewById(R.id.txtEatTime);
-            eateryImage = itemView.findViewById(R.id.imgEateryPic);
             eateryBudget = itemView.findViewById(R.id.txtBgt);
             eateryAddress = itemView.findViewById(R.id.txtAddr);
 
