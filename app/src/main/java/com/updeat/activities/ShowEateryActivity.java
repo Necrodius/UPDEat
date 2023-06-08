@@ -56,7 +56,7 @@ public class ShowEateryActivity extends AppCompatActivity implements OnMapReadyC
     private TextView txtAvePrice;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ListView lstMenu;
-
+    String EateryID;
     LatLng latLng;
     GoogleMap mGoogleMap;
 
@@ -84,6 +84,7 @@ public class ShowEateryActivity extends AppCompatActivity implements OnMapReadyC
         String value = null;
         if (extras != null) {
             value = extras.getString("key");
+            EateryID = value;
             //The key argument here must match that used in the other activity
         }
 
@@ -99,7 +100,6 @@ public class ShowEateryActivity extends AppCompatActivity implements OnMapReadyC
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
-                            String EateryID = documentSnapshot.getString("name");
 
                             if (EateryID != null) {
                                 getEateryInfo(EateryID);

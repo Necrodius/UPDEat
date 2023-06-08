@@ -37,12 +37,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.updeat.R;
@@ -75,6 +77,7 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerView
     ProgressDialog progressDialog;
     Double currLat, currLong;
     FusedLocationProviderClient fusedLocationProviderClient;
+    String value;
 
     ArrayList<Eatery> filterEatList = new ArrayList<Eatery>();
     @Override
@@ -425,15 +428,43 @@ public class DashboardActivity extends AppCompatActivity implements RecyclerView
     public void onItemClick(int position) {
         if(filterEatList != null) {
             if (!filterEatList.isEmpty()) {
+
                 String value = filterEatList.get(position).getName();
                 Intent i = new Intent(DashboardActivity.this, ShowEateryActivity.class);
-                i.putExtra("key", value);
-                startActivity(i);
+                db.collection("Eateries")
+                        .whereEqualTo("name",value)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        String value = document.getId();
+                                        i.putExtra("key", value);
+                                        startActivity(i);
+                                    }
+                                }
+                            }
+                        });
+
             } else {
                 String value = eateryArrayList.get(position).getName();
                 Intent i = new Intent(DashboardActivity.this, ShowEateryActivity.class);
-                i.putExtra("key", value);
-                startActivity(i);
+                db.collection("Eateries")
+                        .whereEqualTo("name",value)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        String value = document.getId();
+                                        i.putExtra("key", value);
+                                        startActivity(i);
+                                    }
+                                }
+                            }
+                        });
             }
         }
         // startActivity(new Intent(this, ShowEateryActivity.class));
