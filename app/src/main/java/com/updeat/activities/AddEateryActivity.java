@@ -88,14 +88,14 @@ public class AddEateryActivity extends AppCompatActivity implements OnMapReadyCa
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(AddEateryActivity.this, "Eatery Added Successfully", Toast.LENGTH_SHORT).show();
-                            Map<String,Object> menu = new HashMap<>();
-                            String ingredients[] = {"DefaultIngredient"};
-                            Map<String,Object> item = new HashMap<>();
-                            String ItemMix = "DefaultItemName" +" - "+ "0.0";
-                            item.put(ItemMix, Arrays.asList(ingredients));
-                            menu.put("Menu",item);
+//                            Map<String,Object> menu = new HashMap<>();
+//                            String ingredients[] = {"DefaultIngredient"};
+//                            Map<String,Object> item = new HashMap<>();
+//                            String ItemMix = "DefaultItemName" +" - "+ "0.0";
+//                            item.put(ItemMix, Arrays.asList(ingredients));
+//                            menu.put("Menu",item);
 
-                            db.collection("Eateries").document(EateryName).set(menu, SetOptions.merge());
+//                            db.collection("Eateries").document(EateryName).set(menu, SetOptions.merge());
 
                             Map<String, Object> data = new HashMap<>();
                             data.put("latitude", 0);
